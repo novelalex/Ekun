@@ -9,9 +9,12 @@
 #include "../scripting/MRuby.h"
 class Game {
 private:
-    MRuby* mrb;
-    rb args; // Hash that gets passed in to every function, I think that's how DragonRuby does it
-    rb game_instance; // This is gonna be the game script from ruby
+    mrb_state* mrb;
+    MRB::rb args; // Hash that gets passed in to every function, I think that's how DragonRuby does it
+    MRB::rb game_instance; // This is gonna be the game script from ruby
+    MRB::rb load;
+    MRB::rb output;
+    MRB::rb input;
 public:
     Game();
     ~Game();

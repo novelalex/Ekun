@@ -8,7 +8,7 @@
 #include <mruby.h>
 #include <string>
 
-namespace MRuby {
+namespace MRB {
 
     typedef mrb_value rb;
 
@@ -66,12 +66,12 @@ namespace MRuby {
 
         void HashClear(rb hash);
 
-        mrb_int HashSize(rb hash);
+        size_t HashSize(rb hash);
 
         // TODO: Refactor into a separate object
-        int ArrayLength(rb array);
+        size_t  ArrayLength(rb array);
 
-        rb ArrayEntry(rb array, int index);
+        rb ArrayEntry(rb array, size_t  index);
 
         rb NewArray();
 
@@ -81,7 +81,7 @@ namespace MRuby {
 
         void ArrayPush(rb array, rb value);
 
-        const char *TypeString(rb val);
+        static const char *TypeString(rb val);
 
         const char *CString(rb str);
 
@@ -89,10 +89,9 @@ namespace MRuby {
 
         void PrintBacktrace();
 
-
-    private:
         static std::string readFile(const std::string &filename);
 
+        static rb SymbolValue(mrb_state *mrb, const char *sym);
     };
 }
 

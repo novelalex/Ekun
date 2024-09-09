@@ -4,11 +4,15 @@
 
 #include "Hash.h"
 
-MRuby::Hash::Hash(mrb_state mrb) {
-
+MRB::Hash::Hash(mrb_state mrb) {
+ // TODO
 }
 
-mrb_state *MRuby::Hash::GetMrb() {
+mrb_state *MRB::Hash::GetMrb() {
     return mrb;
+}
+
+MRB::rb MRB::Hash::Self() {
+    return val;
 }
 

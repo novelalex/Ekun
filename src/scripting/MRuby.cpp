@@ -11,7 +11,7 @@
 #include "mruby/string.h"
 #include "mruby/array.h"
 
-namespace MRuby {
+namespace MRB {
     MRuby::MRuby() {
         mrb = mrb_open();
         if (!mrb) {
@@ -22,21 +22,19 @@ namespace MRuby {
 
     MRuby::~MRuby() {
         mrb_close(mrb);
-        delete mrb;
     }
 
     std::string MRuby::readFile(const std::string &filename) {
         std::ifstream file(filename);
         if (!file.is_open()) {
-            Debug::FatalError("No Game:", __FILE__, __LINE__);
+            Debug::FatalError("No File:", __FILE__, __LINE__);
             exit(1);
         }
         return std::string{(std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>()};
     }
 
     void MRuby::LoadFile(const std::string &filename) {
-        std::string source = readFile("scripts/main.rb");
-        mrb_load_string(mrb, source.c_str());
+
     }
 
     RClass *MRuby::GetClass(const std::string &filename) {
@@ -52,6 +50,10 @@ namespace MRuby {
     }
 
     rb MRuby::SymbolValue(const char *sym) {
+        return mrb_symbol_value(mrb_intern_cstr(mrb, sym));
+    }
+
+    rb MRuby::SymbolValue(mrb_state* mrb, const char *sym) {
         return mrb_symbol_value(mrb_intern_cstr(mrb, sym));
     }
 
@@ -112,15 +114,15 @@ namespace MRuby {
         mrb_hash_clear(mrb, hash);
     }
 
-    mrb_int MRuby::HashSize(rb hash) {
+    size_t MRuby::HashSize(rb hash) {
         return mrb_hash_size(mrb, hash);
     }
 
-    int MRuby::ArrayLength(rb array) {
+    size_t MRuby::ArrayLength(rb array) {
         return RARRAY_LEN(array);
     }
 
-    rb MRuby::ArrayEntry(rb array, int index) {
+    rb MRuby::ArrayEntry(rb array, size_t index) {
         return mrb_ary_entry(array, index);
     }
 
@@ -143,6 +145,7 @@ namespace MRuby {
     void MRuby::SetHashValue(rb hash, rb key, rb val) {
         mrb_hash_set(mrb, hash, key, val);
     }
+
 
     const char *MRuby::TypeString(rb val) {
         mrb_vtype type = mrb_type(val);

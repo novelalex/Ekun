@@ -7,7 +7,7 @@
 
 #include "MRuby.h"
 
-namespace MRuby {
+namespace MRB {
     class Hash {
     private:
         mrb_state *mrb;
