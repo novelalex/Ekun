@@ -6,6 +6,7 @@
 #include <mruby/compile.h>
 #include <mruby/hash.h>
 #include <mruby/array.h>
+
 #include <iostream>
 
 using namespace MRB;
@@ -47,6 +48,12 @@ bool Game::OnCreate() {
     mrb_hash_set(mrb,input, MRuby::SymbolValue(mrb,"dt"), mrb_nil_value());
     mrb_hash_set(mrb,args, MRuby::SymbolValue(mrb,"in"), input);
 
+    // This will not be touched by the engine
+    state = mrb_hash_new(mrb);
+    mrb_hash_set(mrb,args, MRuby::SymbolValue(mrb,"state"), state);
+
+    config = mrb_hash_new(mrb);
+    mrb_hash_set(mrb,args, MRuby::SymbolValue(mrb,"config"), config);
     return true;
 }
 
@@ -57,7 +64,11 @@ void Game::OnDestroy() {
 
 void Game::Init() {
 
-
+    mrb_funcall(mrb, mrb_top_self(mrb), "init", 1, args);
+    if(mrb->exc) {
+        mrb_print_error(mrb);
+        mrb_print_backtrace(mrb);
+    }
 
 }
 
@@ -77,6 +88,13 @@ void Game::Update(const float deltaTime) {
 }
 
 void Game::Render() const {
+
+    //std::cout << MRuby::TypeString(args) << '\n';
+    mrb_funcall(mrb, mrb_top_self(mrb), "render", 1, args);
+    if(mrb->exc) {
+        mrb_print_error(mrb);
+        mrb_print_backtrace(mrb);
+    }
 
 }
 

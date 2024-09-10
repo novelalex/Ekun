@@ -15,6 +15,8 @@ private:
     MRB::rb load;
     MRB::rb output;
     MRB::rb input;
+    MRB::rb config;
+    MRB::rb state;
 public:
     Game();
     ~Game();

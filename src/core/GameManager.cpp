@@ -60,6 +60,7 @@ void GameManager::Run() {
 
         SDL_GL_SwapWindow(window->getWindow());
         SDL_Delay(timer->GetSleepTime(fps));
+
     }
 }
 
