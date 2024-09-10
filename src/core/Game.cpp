@@ -133,7 +133,7 @@ void Game::Render(SDL_Renderer *renderer) {
     SDL_RenderClear(renderer);
     rb out_commands = mrb_hash_get(mrb, args, MRuby::SymbolValue(mrb, "out")); RB_EXC;
     for (size_t i = 0; i < RARRAY_LEN(out_commands); i++) {
-
+        //std::cout << RARRAY_LEN(out_commands) << std::endl;
         rb command = mrb_ary_entry(out_commands, i);
         std::string name = MRuby::GetHashValueString(mrb, command, "name");
         SDL_Rect texture_rect;
