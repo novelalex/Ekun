@@ -89,6 +89,6 @@ void GameManager::HandleEvents() {
             isRunning = false;
             return;
         }
-        game->HandleEvents(sdlEvent);
+        game->HandleEvents(sdlEvent, window->renderer);
     }
 }

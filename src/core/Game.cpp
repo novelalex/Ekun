@@ -65,10 +65,10 @@ bool Game::OnCreate() {
 
 void Game::OnDestroy() {
     //mrb_gc_unregister(mrb, args);
-    std::vector<Sprite*> vals;
+    std::vector<Sprite *> vals;
     vals.reserve(assets.sprites.size());
 
-    for(const auto& kv : assets.sprites) {
+    for (const auto &kv: assets.sprites) {
         delete kv.second;
     }
     mrb_close(mrb);
@@ -81,9 +81,12 @@ void Game::Init(SDL_Renderer *renderer) {
         mrb_print_backtrace(mrb);
     }
 
-    rb load_hash = mrb_hash_get(mrb, args, MRuby::SymbolValue(mrb, "load")); RB_EXC;
-    rb sprite_hash = mrb_hash_get(mrb, load_hash, MRuby::SymbolValue(mrb, "sprite")); RB_EXC;
-    rb sprite_names = mrb_hash_keys(mrb, sprite_hash); RB_EXC;
+    rb load_hash = mrb_hash_get(mrb, args, MRuby::SymbolValue(mrb, "load"));
+    RB_EXC;
+    rb sprite_hash = mrb_hash_get(mrb, load_hash, MRuby::SymbolValue(mrb, "sprite"));
+    RB_EXC;
+    rb sprite_names = mrb_hash_keys(mrb, sprite_hash);
+    RB_EXC;
     for (size_t i = 0; i < RARRAY_LEN(sprite_names); i++) {
         const char *sprite_path = mrb_str_to_cstr(
             mrb,
@@ -91,20 +94,36 @@ void Game::Init(SDL_Renderer *renderer) {
                 mrb,
                 sprite_hash,
                 mrb_ary_entry(sprite_names, i))
-        );RB_EXC;
+        );
+        RB_EXC;
         const char *sprite_name = mrb_str_to_cstr(
             mrb,
-            mrb_funcall( mrb,
-                mrb_ary_entry(sprite_names, i),
-                "to_s",
-                0,
-                nullptr));RB_EXC;
+            mrb_funcall(mrb,
+                        mrb_ary_entry(sprite_names, i),
+                        "to_s",
+                        0,
+                        nullptr));
+        RB_EXC;
         std::cout << "Loading: " << sprite_path << " into " << sprite_name << std::endl;
         assets.sprites[sprite_name] = new Sprite(sprite_path, renderer);
     }
 }
 
-void Game::HandleEvents(const SDL_Event &sdlEvent) {
+void Game::reloadScript(SDL_Renderer *renderer) {
+    OnDestroy();
+    OnCreate();
+    Init(renderer);
+}
+
+void Game::HandleEvents(SDL_Event &sdlEvent, SDL_Renderer *renderer) {
+    switch (sdlEvent.key.keysym.scancode) {
+        case SDL_SCANCODE_R:
+            reloadScript(renderer);
+            return;
+
+        default:
+            break;
+    }
 }
 
 void Game::Update(const float deltaTime) {
@@ -131,11 +150,12 @@ void Game::Render(SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
     SDL_RenderClear(renderer);
-    rb out_commands = mrb_hash_get(mrb, args, MRuby::SymbolValue(mrb, "out")); RB_EXC;
+    rb out_commands = mrb_hash_get(mrb, args, MRuby::SymbolValue(mrb, "out"));
+    RB_EXC;
     for (size_t i = 0; i < RARRAY_LEN(out_commands); i++) {
         //std::cout << RARRAY_LEN(out_commands) << std::endl;
         rb command = mrb_ary_entry(out_commands, i);
-        std::string name = MRuby::GetHashValueString(mrb, command, "name");
+        std::string name = MRuby::GetHashValueString(mrb, command, "sprite");
         SDL_Rect texture_rect;
         texture_rect.x = static_cast<int>(MRuby::GetHashValueFloat(mrb, command, "x"));
         texture_rect.y = static_cast<int>(MRuby::GetHashValueFloat(mrb, command, "y"));
@@ -143,11 +163,10 @@ void Game::Render(SDL_Renderer *renderer) {
         texture_rect.h = static_cast<int>(MRuby::GetHashValueFloat(mrb, command, "h"));
 
 
-        Sprite* s = assets.sprites.at(name);
+        Sprite *s = assets.sprites.at(name);
         SDL_RenderCopy(renderer, s->getTexture(), nullptr, &texture_rect);
     }
 
 
-    SDL_RenderPresent( renderer );
-
+    SDL_RenderPresent(renderer);
 }

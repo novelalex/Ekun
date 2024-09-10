@@ -34,21 +34,21 @@ end
 
 def render(args)
   args[:out] << {
-    name: :reckoning,
+    sprite: :reckoning,
     x: $x,
     y: $x,
     w: $x,
     h: $x,
   }
   args[:out] << {
-    name: :reckoning2,
+    sprite: :reckoning2,
     x: 150,
     y: $y,
     w: $y,
     h: $y,
   }
   args[:out] << {
-    name: :reckoning2,
+    sprite: :reckoning2,
     x: 200,
     y: $x,
     w: $x,

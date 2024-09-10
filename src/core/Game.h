@@ -33,7 +33,10 @@ public:
     bool OnCreate();
     void OnDestroy();
     void Init(SDL_Renderer* renderer);
-    void HandleEvents(const SDL_Event &sdlEvent);
+
+    void reloadScript(SDL_Renderer* renderer);
+
+    void HandleEvents(SDL_Event &sdlEvent, SDL_Renderer* renderer);
     void Update(float deltaTime);
     void Render(SDL_Renderer* renderer) ;
 };
