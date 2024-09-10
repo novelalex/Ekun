@@ -10,6 +10,7 @@
 #include "mruby/hash.h"
 #include "mruby/string.h"
 #include "mruby/array.h"
+#include "mruby/value.h"
 
 namespace MRB {
     MRuby::MRuby() {
@@ -218,7 +219,32 @@ namespace MRB {
     }
 
 
-    mrb_state *MRuby::MRuby::GetMrb() {
+    mrb_state *MRuby::GetMrb() {
         return mrb;
     }
+
+    const char* MRuby::GetHashValueString(mrb_state* mrb, mrb_value hash, const char* key) {
+        return mrb_str_to_cstr(
+            mrb,
+            mrb_funcall(
+                mrb,
+                mrb_hash_get(mrb, hash, MRuby::SymbolValue(mrb, key)),
+                "to_s",
+                0,
+                nullptr)
+        );
+    }
+
+    double MRuby::GetHashValueFloat(mrb_state *mrb, mrb_value hash, const char *key) {
+        return mrb_float(
+        mrb_funcall(
+                        mrb,
+                        mrb_hash_get(mrb, hash, MRuby::SymbolValue(mrb, key)),
+                        "to_f",
+                        0,
+                        nullptr)
+        );
+    }
+
+
 }

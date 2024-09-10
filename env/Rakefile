@@ -1,0 +1,14 @@
+def pwsh(command)
+  exec "powershell.exe #{command}"
+end
+
+task :default => :run_engine_debug
+
+task :run_engine_debug do
+  pwsh '../bin/debug/bin/Ekun.exe'
+end
+
+task :run_engine_release do
+  pwsh '../bin/release/bin/Ekun.exe'
+end
+

@@ -37,9 +37,6 @@ set(IMGUI_SOURCES
 
 include_directories(
         ${SDL2_INCLUDE_DIRS}
-        ${SDL2_IMAGE_INCLUDE_DIRS}
-        ${SDL2_MIXER_INCLUDE_DIRS}
-        ${SDL2_TTF_INCLUDE_DIRS}
         ${GLEW_INCLUDE_DIR}
         ${GLM_INCLUDE_DIR}
         ${MRUBY_INCLUDE_DIR}
@@ -61,13 +58,15 @@ add_executable(Ekun ${IMGUI_SOURCES}
         src/scripting/MRuby.cpp
         src/scripting/MRuby.h
         src/scripting/Hash.cpp
-        src/scripting/Hash.h)
+        src/scripting/Hash.h
+        src/graphics/Sprite.cpp
+        src/graphics/Sprite.h)
 
 target_link_libraries(Ekun
         ${SDL2_LIBRARIES}
-        ${SDL2_IMAGE_LIBRARIES}
-        ${SDL2_MIXER_LIBRARIES}
-        ${SDL2_TTF_LIBRARIES}
+        SDL2_image::SDL2_image
+        SDL2_mixer::SDL2_mixer
+        SDL2_ttf::SDL2_ttf
         ${GLEW_LIBRARY}
         ${MRUBY_LIBRARY}
         ${MRUBY_CORE_LIBRARY}

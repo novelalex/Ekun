@@ -1,5 +1,5 @@
 MRuby::Toolchain.new(:visualcpp) do |conf, _params|
-  compiler_flags = %w(/nologo /W3 /MD /O2 /D_CRT_SECURE_NO_WARNINGS)
+  compiler_flags = %w(/nologo /W3 /MD /O2 /D_CRT_SECURE_NO_WARNINGS /FS)
   [conf.cc, conf.cxx].each do |compiler|
     if compiler == conf.cc
       compiler.command = ENV['CC'] || 'cl.exe'

@@ -19,6 +19,9 @@ namespace MRB {
     public:
         mrb_state *GetMrb();
 
+        static const char *GetHashValueString(mrb_state *mrb, mrb_value hash, const char *key);
+        static double GetHashValueFloat(mrb_state *mrb, mrb_value hash, const char *key);
+
     public:
         MRuby();
 
@@ -69,7 +72,7 @@ namespace MRB {
         size_t HashSize(rb hash);
 
         // TODO: Refactor into a separate object
-        size_t  ArrayLength(rb array);
+        static size_t  ArrayLength(rb array);
 
         rb ArrayEntry(rb array, size_t  index);
 

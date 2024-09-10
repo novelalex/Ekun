@@ -4,6 +4,8 @@
 
 #include "Window.h"
 
+#include <SDL_image.h>
+
 Window::Window(): window{nullptr}, context{nullptr},  width{0}, height{0} {}
 
 Window::~Window() {
@@ -25,23 +27,37 @@ bool Window::OnCreate(const std::string& name_, int width_, int height_){
         Debug::FatalError("Failed to create a window", __FILE__, __LINE__);
         return false;
     }
-    context = SDL_GL_CreateContext(window);
-    int major, minor;
-    getInstalledOpenGLInfo(&major,&minor);
-    setAttributes(major,minor);
-    /// Fire up the GL Extension Wrangler (GLEW)
-    GLenum err = glewInit();
-    if (err != GLEW_OK) {
-        Debug::FatalError("Glew initialization failed", __FILE__, __LINE__);
+
+    // TODO
+    //Initialize PNG loading
+    renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
+
+    SDL_SetRenderDrawColor( renderer, 255, 255, 255, 255 );
+    int imgFlags = IMG_INIT_PNG;
+    if( !( IMG_Init( imgFlags ) & imgFlags ) )
+    {
+        printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
         return false;
     }
-    glViewport(0, 0, width, height);
+    // context = SDL_GL_CreateContext(window);
+    // int major, minor;
+    // getInstalledOpenGLInfo(&major,&minor);
+    // setAttributes(major,minor);
+    // /// Fire up the GL Extension Wrangler (GLEW)
+    // GLenum err = glewInit();
+    // if (err != GLEW_OK) {
+    //     Debug::FatalError("Glew initialization failed", __FILE__, __LINE__);
+    //     return false;
+    // }
+    // glViewport(0, 0, width, height);
 
     return true;
 }
 
 void Window::OnDestroy() {
-    SDL_GL_DeleteContext(context);
+    // TODO
+    // SDL_GL_DeleteContext(context);
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     window = nullptr;
 }

@@ -24,6 +24,7 @@ GameManager::~GameManager() {
         delete window;
         window = nullptr;
     }
+
 }
 
 bool GameManager::Initialize(const std::string& name_, int width_, int height_) {
@@ -51,14 +52,14 @@ bool GameManager::Initialize(const std::string& name_, int width_, int height_) 
 void GameManager::Run() {
     timer->Start();
     isRunning = true;
-    game->Init();
+    game->Init(window->renderer);
     while (isRunning) {
         HandleEvents();
         timer->UpdateFrameTicks();
         game->Update(timer->GetDeltaTime());
-        game->Render();
+        game->Render(window->renderer);
 
-        SDL_GL_SwapWindow(window->getWindow());
+       // SDL_GL_SwapWindow(window->getWindow());
         SDL_Delay(timer->GetSleepTime(fps));
 
     }
