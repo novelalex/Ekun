@@ -41,6 +41,8 @@ public:
 
     void LoadSprites(SDL_Renderer *renderer, MRB::rb &load_hash);
 
+    void RenderSpriteDestRect(SDL_Renderer * renderer, MRB::rb rb);
+
     void HandleOutputs(SDL_Renderer *renderer, MRB::rb &out_commands);
 
     void RenderSpriteDest(SDL_Renderer *renderer, MRB::rb &command);

@@ -135,13 +135,15 @@ void Game::reloadScript(SDL_Renderer *renderer) {
 
 void Game::HandleEvents(SDL_Event &sdlEvent, SDL_Renderer *renderer) {
     switch (sdlEvent.key.keysym.scancode) {
-        case SDL_SCANCODE_R:
-            reloadScript(renderer);
-            return;
+        // case SDL_SCANCODE_R:
+        //     reloadScript(renderer);
+        //     return;
 
         default:
             break;
     }
+
+    SDL_SCANCODE_0;
 }
 
 void Game::Update(const float deltaTime) {
@@ -186,6 +188,7 @@ void Game::HandleOutputs(SDL_Renderer *renderer, rb &out_commands) {
         size_t command_len = mrb_hash_size(mrb, command);
         if (MRuby::CheckHashKeyExist(mrb, command, EKRB_H_SPRITE)) {
             if (command_len == 5) RenderSpriteDest(renderer, command);
+            else if (command_len == 2) RenderSpriteDestRect(renderer, command);
         } else if (MRuby::CheckHashKeyExist(mrb, command, EKRB_H_FONT)) {
             if (command_len == 5) RenderFont(renderer, command);
         }
@@ -204,6 +207,21 @@ void Game::RenderSpriteDest(SDL_Renderer *renderer, rb &command) {
     Sprite *s = assets.sprites.at(name);
     SDL_RenderCopy(renderer, s->getTexture(), nullptr, &texture_rect);
 }
+
+
+void Game::RenderSpriteDestRect(SDL_Renderer *renderer, rb command) {
+    std::string name = MRuby::GetHashValueString(mrb, command, EKRB_H_SPRITE);
+    SDL_Rect texture_rect;
+    rb dest_arry = mrb_hash_get(mrb, command, MRuby::SymbolValue(mrb, "dest"));
+    texture_rect.x = mrb_int(mrb, mrb_ary_entry(dest_arry, 0));
+    texture_rect.y = mrb_int(mrb, mrb_ary_entry(dest_arry, 1));
+    texture_rect.w = mrb_int(mrb, mrb_ary_entry(dest_arry, 2));
+    texture_rect.h = mrb_int(mrb, mrb_ary_entry(dest_arry, 3));
+
+    Sprite *s = assets.sprites.at(name);
+    SDL_RenderCopy(renderer, s->getTexture(), nullptr, &texture_rect);
+}
+
 void Game::RenderFont(SDL_Renderer *renderer, rb command) {
     std::string name = MRuby::GetHashValueString(mrb, command, EKRB_H_FONT);
     int x = static_cast<int>(MRuby::GetHashValueFloat(mrb, command, EKRB_F_X));
