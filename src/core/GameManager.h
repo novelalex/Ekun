@@ -21,9 +21,9 @@ public:
     bool Initialize(const std::string& name_, int width_, int height_);
     void HandleEvents();
 private:
-    class Timer* timer;
-    class Window* window;
-    std::unique_ptr<Game> game;
+    Timer* timer;
+    Window* window;
+    Game* game;
 
     unsigned int fps;
     bool isRunning;

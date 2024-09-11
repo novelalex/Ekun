@@ -8,7 +8,7 @@
 #include "Timer.h"
 #include "Game.h"
 
-GameManager::GameManager():window{nullptr}, timer{nullptr}, fps{60}, isRunning{false}, fullScreen{false} {
+GameManager::GameManager():window{nullptr}, timer{nullptr}, fps{60}, isRunning{false}, fullScreen{false}, game{nullptr} {
     Debug::Info("Starting the GameManager", __FILE__, __LINE__);
 }
 
@@ -20,10 +20,16 @@ GameManager::~GameManager() {
         timer = nullptr;
     }
 
+    if (game) {
+        delete game;
+        game = nullptr;
+    }
+
     if (window) {
         delete window;
         window = nullptr;
     }
+
 
 }
 
@@ -41,7 +47,7 @@ bool GameManager::Initialize(const std::string& name_, int width_, int height_) 
     }
 
     // INIT GAME
-    game = std::make_unique<Game>();
+    game = new Game();
     if(!game->OnCreate()){
         Debug::FatalError("Failed to initialize Game", __FILE__, __LINE__);
         return false;

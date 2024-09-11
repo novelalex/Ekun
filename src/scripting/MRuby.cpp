@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <io.h>
 #include "MRuby.h"
 #include "../core/Debug.h"
 #include "mruby/compile.h"
@@ -11,6 +12,8 @@
 #include "mruby/string.h"
 #include "mruby/array.h"
 #include "mruby/value.h"
+
+
 
 namespace MRB {
     MRuby::MRuby() {
@@ -244,6 +247,10 @@ namespace MRB {
                         0,
                         nullptr)
         );
+    }
+
+    bool MRuby::CheckHashKeyExist(mrb_state *mrb, rb hash, const char *key) {
+        return mrb_hash_key_p(mrb, hash, SymbolValue(mrb, key));
     }
 
 

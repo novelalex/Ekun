@@ -23,7 +23,6 @@ public:
     SDL_Texture* getTexture();
 
 private:
-    SDL_Surface *loadSurface(const std::string& path);
 
     SDL_Texture *loadTexture(std::string path, SDL_Renderer *renderer);
 };

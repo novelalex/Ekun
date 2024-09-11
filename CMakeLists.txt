@@ -57,10 +57,13 @@ add_executable(Ekun ${IMGUI_SOURCES}
         src/core/Game.h
         src/scripting/MRuby.cpp
         src/scripting/MRuby.h
-        src/scripting/Hash.cpp
-        src/scripting/Hash.h
         src/graphics/Sprite.cpp
-        src/graphics/Sprite.h)
+        src/graphics/Sprite.h
+        src/scripting/Script.cpp
+        src/scripting/Script.h
+        src/core/Ekun.h
+        src/graphics/Font.cpp
+        src/graphics/Font.h)
 
 target_link_libraries(Ekun
         ${SDL2_LIBRARIES}

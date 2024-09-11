@@ -20,7 +20,7 @@ Sprite::Sprite(const std::string& filename, SDL_Renderer* renderer) {
 }
 
 Sprite::~Sprite() {
-    std::cout << "Destroying Sprite" << std::endl;
+    //std::cout << "Destroying Sprite" << std::endl;
     SDL_DestroyTexture(texture);
 }
 

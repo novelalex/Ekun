@@ -3,6 +3,7 @@
 //
 
 #include "Window.h"
+#include "SDL_ttf.h"
 
 #include <SDL_image.h>
 
@@ -13,7 +14,7 @@ Window::~Window() {
 }
 
 bool Window::OnCreate(const std::string& name_, int width_, int height_){
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         Debug::FatalError("Failed to initialize SDL", __FILE__, __LINE__);
         return false;
     }
@@ -39,6 +40,11 @@ bool Window::OnCreate(const std::string& name_, int width_, int height_){
         printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
         return false;
     }
+
+    if (TTF_Init() < 0) {
+        printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+        return false;
+    }
     // context = SDL_GL_CreateContext(window);
     // int major, minor;
     // getInstalledOpenGLInfo(&major,&minor);
@@ -59,6 +65,9 @@ void Window::OnDestroy() {
     // SDL_GL_DeleteContext(context);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+    IMG_Quit();
+    TTF_Quit();
+    SDL_Quit();
     window = nullptr;
 }
 

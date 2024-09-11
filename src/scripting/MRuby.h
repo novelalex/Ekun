@@ -7,6 +7,11 @@
 
 #include <mruby.h>
 #include <string>
+#include <iostream>
+#include <sstream>
+
+
+#define RB_EXC  ;
 
 namespace MRB {
 
@@ -20,13 +25,13 @@ namespace MRB {
         mrb_state *GetMrb();
 
         static const char *GetHashValueString(mrb_state *mrb, mrb_value hash, const char *key);
+
         static double GetHashValueFloat(mrb_state *mrb, mrb_value hash, const char *key);
 
     public:
         MRuby();
 
         ~MRuby();
-
 
 
         void LoadFile(const std::string &filename);
@@ -72,9 +77,9 @@ namespace MRB {
         size_t HashSize(rb hash);
 
         // TODO: Refactor into a separate object
-        static size_t  ArrayLength(rb array);
+        static size_t ArrayLength(rb array);
 
-        rb ArrayEntry(rb array, size_t  index);
+        rb ArrayEntry(rb array, size_t index);
 
         rb NewArray();
 
@@ -95,6 +100,8 @@ namespace MRB {
         static std::string readFile(const std::string &filename);
 
         static rb SymbolValue(mrb_state *mrb, const char *sym);
+
+        static bool CheckHashKeyExist(mrb_state *mrb, rb hash, const char *key);
     };
 }
 

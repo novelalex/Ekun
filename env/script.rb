@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-# class Hash
-#   def << (hash)
-#     hash.keys.each { |key|
-#       self[key] += hash[key]
-#     }
-#   end
-# end
 
 $x = 1
 $y = 150
@@ -14,6 +7,7 @@ $down = true
 def on_create(args)
   args[:load][:sprite][:reckoning2] = "sprites/thereckoningv2.png"
   args[:load][:sprite][:reckoning] = "sprites/thereckoning.png"
+  args[:load][:font][:roboto] = ["fonts/CreatoDisplay-Regular.otf", 30]
 end
 
 def update(args)
@@ -54,5 +48,14 @@ def render(args)
     w: $x,
     h: $x,
   }
+
+  args[:out] << {
+    font: :roboto,
+    color: [0, 0, 0, 255],
+    x: 30,
+    y: 30,
+    text: "FPS: %.2f" % args[:in][:fps]
+  }
+
 end
 
