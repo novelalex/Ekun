@@ -5,7 +5,8 @@ require './scripts/core/core.rb'
 $slide_number = 0
 $slides = []
 
-require './scripts/slides/slide.rb'
+require './scripts/slide.rb'
+
 require './scripts/slides/slide1.rb'
 require './scripts/slides/slide2.rb'
 require './scripts/slides/slide3.rb'
@@ -25,11 +26,21 @@ def next_slide
   end
 end
 
+def prev_slide
+  if $slide_number > 0
+    $slide_number -= 1
+  end
+end
+
 $prev_scancode = 0
 def handle_events(args)
   #puts args[:in][:keyboard]
   if args[:in][:keyboard] == 44 and $prev_scancode == 0
     next_slide
+  elsif args[:in][:keyboard] == 79 and $prev_scancode == 0
+    next_slide
+  elsif args[:in][:keyboard] == 80 and $prev_scancode == 0
+    prev_slide
   end
 
   $prev_scancode = args[:in][:keyboard]

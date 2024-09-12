@@ -104,7 +104,7 @@ void Game::LoadFonts(rb &load_hash) {
                         );
         const char* font_path = mrb_str_to_cstr(mrb, mrb_ary_entry(font_info, 0));
         RB_EXC;
-        int font_size = mrb_integer(mrb_ary_entry(font_info, 0));
+        int font_size = mrb_integer(mrb_ary_entry(font_info, 1));
         RB_EXC;
         const char *font_name = mrb_str_to_cstr(
                 mrb,
