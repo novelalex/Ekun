@@ -1,5 +1,5 @@
 def pwsh(command)
-  exec "powershell.exe #{command}"
+  `powershell.exe #{command}`
 end
 
 task :default => :run_engine_debug

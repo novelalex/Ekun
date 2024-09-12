@@ -14,6 +14,7 @@
 #define EKRB_FN_ON_CREATE "on_create"
 #define EKRB_FN_UPDATE "update"
 #define EKRB_FN_RENDER "render"
+#define EKRB_FN_HANDLE_EVENTS "handle_events"
 
 #define EKRB_FN_TO_STRING "to_s"
 #define EKRB_FN_TO_FLOAT "to_f"
@@ -27,6 +28,8 @@
 #define EKRB_F_X "x"
 #define EKRB_F_Y "y"
 #define EKRB_F_Z "z"
+#define EKRB_F_W "w"
+#define EKRB_F_H "h"
 
 
 

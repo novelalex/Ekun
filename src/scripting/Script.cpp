@@ -34,6 +34,7 @@ void Script::CreateArgs(mrb_state *mrb) {
 
     // Any data that the engine sends to the scripts will be accessed here (events, delta time, fps, screen size, ...)
     input = mrb_hash_new(mrb);
+
     mrb_hash_set(mrb, args, MRuby::SymbolValue(mrb, EKRB_H_IN), input);
 
     // This will not be touched by the engine

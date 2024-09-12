@@ -20,7 +20,6 @@ public:
     void Run();
     bool Initialize(const std::string& name_, int width_, int height_);
     void HandleEvents();
-private:
     Timer* timer;
     Window* window;
     Game* game;
@@ -28,6 +27,7 @@ private:
     unsigned int fps;
     bool isRunning;
     bool fullScreen;
+private:
 };
 
 

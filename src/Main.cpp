@@ -15,7 +15,7 @@ int main(int argc, char *args[]) {
     Debug::DebugInit("EkunLog.txt");
 
     auto gm = std::make_unique<GameManager>();
-    if (gm->Initialize("Ekun (Name subject to change)", 1280/2, 720/2)) {
+    if (gm->Initialize("Ekun (Name subject to change)", 1280, 720)) {
         gm->Run();
     } else {
         printf("Init Failed\n");

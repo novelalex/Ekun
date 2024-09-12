@@ -73,28 +73,5 @@ void GameManager::Run() {
 
 
 void GameManager::HandleEvents() {
-    SDL_Event sdlEvent;
-    while (SDL_PollEvent(&sdlEvent)) { /// Loop over all events in the SDL queue
-        if (sdlEvent.type == SDL_EventType::SDL_QUIT) {
-            isRunning = false;
-            return;
-        }
-        else if (sdlEvent.type == SDL_KEYDOWN) {
-            switch (sdlEvent.key.keysym.scancode) {
-                //[[fallthrough]]; /// C17 Prevents switch/case fallthrough warnings
-                case SDL_SCANCODE_ESCAPE:
-                    isRunning = false;
-                    return;
-
-                default:
-                    break;
-            }
-        }
-        if (game == nullptr) { /// Just to be careful
-            Debug::FatalError("No Game:", __FILE__, __LINE__);
-            isRunning = false;
-            return;
-        }
-        game->HandleEvents(sdlEvent, window->renderer);
+        game->HandleEvents(window->renderer, this);
     }
-}

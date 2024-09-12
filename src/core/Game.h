@@ -9,6 +9,7 @@
 #include <SDL.h>
 #include <unordered_map>
 
+#include "GameManager.h"
 #include "../graphics/Sprite.h"
 #include "../scripting/MRuby.h"
 #include "../scripting/Script.h"
@@ -35,13 +36,15 @@ public:
 
     void reloadScript(SDL_Renderer* renderer);
 
-    void HandleEvents(SDL_Event &sdlEvent, SDL_Renderer* renderer);
+    void HandleEvents(SDL_Renderer* renderer, GameManager* manager);
     void Update(float deltaTime);
     void Render(SDL_Renderer* renderer) ;
 
     void LoadSprites(SDL_Renderer *renderer, MRB::rb &load_hash);
 
     void RenderSpriteDestRect(SDL_Renderer * renderer, MRB::rb rb);
+
+    void RenderFontWidth(SDL_Renderer * renderer, MRB::rb rb);
 
     void HandleOutputs(SDL_Renderer *renderer, MRB::rb &out_commands);
 
