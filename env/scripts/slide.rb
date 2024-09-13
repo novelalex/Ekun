@@ -1,16 +1,21 @@
 class Slide
-  attr_accessor :update, :render
+  attr_accessor :on_create_block, :update_block, :render_block
   def initialize
-    @update = nil
-    @render = nil
+    @on_create_block = nil
+    @update_block = nil
+    @render_block = nil
   end
 
-  def update_block(&block)
-    @update = block;
+  def on_create(&block)
+    @on_create_block = block
   end
 
-  def render_block(&block)
-    @render = block;
+  def update(&block)
+    @update_block = block;
+  end
+
+  def render(&block)
+    @render_block = block;
   end
 
 end

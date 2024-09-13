@@ -27,16 +27,19 @@ private:
     mrb_state* mrb{};
     Script script;
     std::vector<SDL_Texture*> textures_to_destroy;
+    GameManager* manager;
+    MRB::rb window_info;
+    MRB::rb mouse_info;
 public:
     Game();
     ~Game();
-    bool OnCreate();
+    bool OnCreate(GameManager *manager);
     void OnDestroy();
     void Init(SDL_Renderer* renderer);
 
     void reloadScript(SDL_Renderer* renderer);
 
-    void HandleEvents(SDL_Renderer* renderer, GameManager* manager);
+    void HandleEvents(SDL_Renderer* renderer);
     void Update(float deltaTime);
     void Render(SDL_Renderer* renderer) ;
 
@@ -48,7 +51,8 @@ public:
 
     void HandleOutputs(SDL_Renderer *renderer, MRB::rb &out_commands);
 
-    void RenderSpriteDest(SDL_Renderer *renderer, MRB::rb &command);
+    void RenderSprite(SDL_Renderer *renderer, MRB::rb &command);
+    void RenderSpriteFull(SDL_Renderer *renderer, MRB::rb &command);
 
     void LoadFonts(MRB::rb &load_hash);
 

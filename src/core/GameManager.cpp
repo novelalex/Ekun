@@ -48,7 +48,7 @@ bool GameManager::Initialize(const std::string& name_, int width_, int height_) 
 
     // INIT GAME
     game = new Game();
-    if(!game->OnCreate()){
+    if(!game->OnCreate(this)){
         Debug::FatalError("Failed to initialize Game", __FILE__, __LINE__);
         return false;
     }
@@ -73,5 +73,5 @@ void GameManager::Run() {
 
 
 void GameManager::HandleEvents() {
-        game->HandleEvents(window->renderer, this);
+        game->HandleEvents(window->renderer);
     }

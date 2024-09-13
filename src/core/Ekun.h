@@ -30,6 +30,7 @@
 #define EKRB_F_Z "z"
 #define EKRB_F_W "w"
 #define EKRB_F_H "h"
+#define EKRB_B_CENTERED "centered"
 
 
 

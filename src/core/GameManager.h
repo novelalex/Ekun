@@ -20,9 +20,9 @@ public:
     void Run();
     bool Initialize(const std::string& name_, int width_, int height_);
     void HandleEvents();
-    Timer* timer;
-    Window* window;
-    Game* game;
+    Timer* timer{};
+    Window* window{};
+    Game* game{};
 
     unsigned int fps;
     bool isRunning;
