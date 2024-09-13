@@ -2,7 +2,7 @@
 
 require './scripts/core/core.rb'
 
-$slide_number = 0
+$slide_number = 15
 $slides = []
 
 require './scripts/slide.rb'
@@ -12,6 +12,8 @@ def on_create(args)
   args[:load][:sprite][:reckoning2] = "sprites/thereckoningv2.png"
   args[:load][:sprite][:reckoning] = "sprites/thereckoning.png"
   args[:load][:sprite][:steins] = "sprites/steins.png"
+  args[:load][:sprite][:timeline] = "sprites/timeline.png"
+  args[:load][:sprite][:choice] = "sprites/choice.png"
   args[:load][:sprite][:danganronpa] = "sprites/danganronpa.png"
   args[:load][:font][:creato_title] = ["fonts/CreatoDisplay-Regular.otf", 70]
   args[:load][:font][:h1] = ["fonts/CreatoDisplay-Regular.otf", 50]

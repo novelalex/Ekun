@@ -98,7 +98,6 @@ void Game::LoadSprites(SDL_Renderer *renderer, rb &load_hash) {
 }
 
 void Game::LoadFonts(rb &load_hash) {
-
     rb font_hash = mrb_hash_get(mrb, load_hash, MRuby::SymbolValue(mrb, EKRB_H_FONT));MRB_EXC
     rb font_names = mrb_hash_keys(mrb, font_hash);MRB_EXC
     for (size_t i = 0; i < RARRAY_LEN(font_names); i++) {

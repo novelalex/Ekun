@@ -357,3 +357,240 @@ slide.render do |args|
 
 end
 $slides << slide
+
+
+# ---------   Slide 9     ---------
+
+slide = Slide.new
+slide.render do |args|
+  args[:out] << {
+    font: :h2,
+    color: Color.new(0, 0, 0).to_a,
+    x: 120,
+    y: 70,
+    text: "Chapter 3"
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 150,
+    w: 1100,
+    text: "The characters search for the train's conductor, in the staff room, but no one is inside. Finding a key in one of the rooms that was cleaned, they take the key, back to the staff room, now locked, and find the conductor. The conductor tells the characters that they're in a separate sub-space between worlds and that they came into in this space when the train they were on crashed. The five learn they're stuck in this limbo between worlds, and are unable to escape.
+"  }
+
+end
+$slides << slide
+
+# ---------   Slide 10     ---------
+
+slide = Slide.new
+slide.render do |args|
+  args[:out] << {
+    font: :h2,
+    color: Color.new(0, 0, 0).to_a,
+    x: 120,
+    y: 70,
+    text: "Chapter 4"
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 150,
+    w: 1100,
+    text: "The five discuss their situation, trying to come to terms that they've left everyone behind. The five split up to take some time to think, the main character talks to all of them, trying to get a better idea of who they were. Increasing their friendships with everyone. The five regroup, and the conductor confronts them with the decision to stay on the train.
+
+If the group chooses to go to hell, players will be awarded a special ending." }
+
+end
+$slides << slide
+
+# ---------   Slide 11     ---------
+
+slide = Slide.new
+slide.render do |args|
+  args[:out] << {
+    font: :h2,
+    color: Color.new(0, 0, 0).to_a,
+    x: 120,
+    y: 70,
+    text: "Chapter 5"
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 150,
+    w: 1100,
+    text: "The conductor asks if they've made their choice, and the five choose to stay on the train. They decide what to do with their remaining time, regretting decisions they've made in the past. The main character talks to the others, trying to get a better sense of everyone. The main character finds the conductor once more, asking her if there's another way out, and the conductor reluctantly tells him that there is a way to save them, but that he would only be able to save one of them as the train will always crash. The protagonist chooses to save the character he had the highest friendship with.
+" }
+
+end
+$slides << slide
+
+# ---------   Slide 12     ---------
+
+slide = Slide.new
+slide.render do |args|
+  args[:out] << {
+    font: :h2,
+    color: Color.new(0, 0, 0).to_a,
+    x: 120,
+    y: 70,
+    text: "Epilogue"
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 150,
+    w: 1100,
+    text: "The protagonist goes back before the train departs the station. The protagonist meets with all the characters, and finds the character they choose to save. The protagonist finds them, and warns them to get off the train before the train leaves. The main character gets other out of the train in time, but isn't able to get off the train.
+" }
+
+end
+$slides << slide
+
+
+# ---------   Slide 13    ---------
+
+slide = Slide.new
+slide.render do |args|
+  args[:out] << {
+    font: :h2,
+    color: Color.new(0, 0, 0).to_a,
+    x: 120,
+    y: 70,
+    text: "After Life"
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 120,
+    text: "Post Ending" }
+
+  img_scale_factor = 0.7;
+  args[:out] << {
+    sprite: :timeline,
+    dest: Rect.new(50, 180, 796 * img_scale_factor, 707 * img_scale_factor)
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 650,
+    y: 120,
+    w: 500,
+    text: "After the game's epilogue, an additional story can be achieved by reloading Chapter IV's save file. The game keeps track of the character's the player has saved, and can go back and replay certain parts to achieve a true ending" }
+
+end
+$slides << slide
+
+# ---------   Slide 14     ---------
+
+slide = Slide.new
+slide.render do |args|
+  args[:out] << {
+    font: :h2,
+    color: Color.new(0, 0, 0).to_a,
+    x: 120,
+    y: 70,
+    text: "Friendship Meter"
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 150,
+    w: 1100,
+    text: "Through several choices throughout the game, the game measures a friendship meter. How players respond to situations and other people determine the ending outcome on who they can save." }
+
+  scale = 0.8
+  args[:out] << {
+    sprite: :choice,
+    dest: Rect.new(400, 400, 600 * scale, 325 * scale)
+  }
+
+end
+$slides << slide
+
+# ---------   Slide 15     ---------
+
+slide = Slide.new
+slide.render do |args|
+  args[:out] << {
+    font: :h2,
+    color: Color.new(0, 0, 0).to_a,
+    x: 120,
+    y: 70,
+    text: "Work Distribution"
+  }
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 150,
+    text: "Novel"}
+
+  args[:out] << {
+    font: :p,
+    color: Color.new(100, 100, 100).to_a,
+    x: 120,
+    y: 210,
+    w: 300,
+    text: "- Music / Sound
+- 2D Art
+- Engine Programming
+- Gameplay Scripting
+"}
+
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 400,
+    y: 150,
+    text: "Matthew"}
+
+  args[:out] << {
+    font: :p,
+    color: Color.new(100, 100, 100).to_a,
+    x: 400,
+    y: 210,
+    w: 300,
+    text: "- Story
+- 3D Modelling
+- Engine Programming
+- Gameplay Scripting
+"}
+
+  args[:out] << {
+    font: :h3,
+    color: Color.new(100, 100, 100).to_a,
+    x: 700,
+    y: 150,
+    text: "Dylan"}
+
+  args[:out] << {
+    font: :p,
+    color: Color.new(100, 100, 100).to_a,
+    x: 700,
+    y: 210,
+    w: 300,
+    text: "- Story
+- Character Design
+- Script
+- Gameplay Scripting
+"}
+
+end
+$slides << slide
