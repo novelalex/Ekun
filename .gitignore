@@ -1,4 +1,6 @@
-.vs/
+.vs/*
 .idea/
 bin/
 vendor/
+out/
+!.vs/launch.vs.json
