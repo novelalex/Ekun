@@ -2,7 +2,7 @@
 
 require './scripts/core/core.rb'
 
-$slide_number = 15
+$slide_number = 0
 $slides = []
 
 require './scripts/slide.rb'
