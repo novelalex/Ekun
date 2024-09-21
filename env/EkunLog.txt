@@ -1,3 +1,0 @@
-Sat Sep 21 16:01:34 2024
-[INFO]: Starting the GameManager
-[INFO]: Deleting the SceneManager
