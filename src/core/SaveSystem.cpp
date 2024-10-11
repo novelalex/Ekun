@@ -1,5 +1,6 @@
 #include "SaveSystem.h"
 #include <fstream>
+#include <string>
 
 
 
@@ -8,11 +9,11 @@ void SaveSystem::saveData(int data) {
    
     
     
-    ofstream fout;
+    std::ofstream fout;
     
     fout.open("savedata.txt");
 
-    fout << data << endl;
+    fout << data << std::endl;
     
     fout.close();
 
