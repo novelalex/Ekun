@@ -7,7 +7,7 @@
 
 
 class InputHandler {
-
+public:
     static bool handle_click_zone(int x, int y, int w, int h, int mx, int my);
 
 };
