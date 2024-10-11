@@ -1,7 +1,6 @@
 #include "SaveSystem.h"
 #include <fstream>
 
-using namespace std;
 
 
 
@@ -22,5 +21,12 @@ void SaveSystem::saveData(int data) {
 
 
 int SaveSystem::loadData() {
+    std::ifstream fin;
+    fin.open("savedata.txt");
+    if (fin.good()) {
+        std::string savedata;
+        getline(fin, savedata);
+        return std::stoi(savedata);
+    }
     return 0;
 }
