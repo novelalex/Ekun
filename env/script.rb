@@ -58,6 +58,8 @@ def update(args)
   end
 end
 
+def clickzone ()
+
 def print_debug_info(args)
   args[:out] << {
     font: :creato_small, x: 10, y: 10, text: "fps: %.2f" % args[:in][:fps]

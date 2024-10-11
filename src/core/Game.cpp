@@ -118,9 +118,7 @@ void Game::LoadFonts(rb &load_hash) {
         }
         std::cout << "Loading: " << font_path << " into " << font_name << std::endl;
         TTF_Font *ttf = TTF_OpenFont(font_path, font_size);
-//        if (ttf == nullptr) {
-//            std::cout << "WHY IT NO WORKY??" << std::endl;
-//        }
+
         assets.fonts[font_name] = new Font(font_path, font_size);
         MRB_EXC
     }
