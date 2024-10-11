@@ -17,6 +17,7 @@
 #include <filesystem>
 #include "Debug.h"
 #include "Window.h"
+#include "SaveSystem.h"
 
 #define MRB_EXC if (mrb->exc) {mrb_print_error(mrb);}
 
@@ -70,6 +71,10 @@ void Game::Init(SDL_Renderer *renderer) {
     MRB_EXC
     LoadSprites(renderer, load_hash);
     LoadFonts(load_hash);
+
+    // load
+    int slide_number = SaveSystem::loadData();
+    mrb_funcall(mrb, mrb_top_self(mrb), "load_slide_number", 1, mrb_int_value(mrb, slide_number));
 }
 
 void Game::LoadSprites(SDL_Renderer *renderer, rb &load_hash) {
@@ -134,11 +139,14 @@ void Game::reloadScript(SDL_Renderer *renderer) {
 }
 
 void Game::HandleEvents(SDL_Renderer *renderer) {
-    int ai = mrb_gc_arena_save(mrb);
-
     SDL_Event sdlEvent;
+    int slide_number;
+
+    int ai = mrb_gc_arena_save(mrb);
     rb kb = mrb_int_value(mrb, SDL_SCANCODE_UNKNOWN);
+    mrb_value mrb_slide_number;
     mrb_gc_arena_restore(mrb, ai);
+
 
     while (SDL_PollEvent(&sdlEvent)) {
 
@@ -150,6 +158,10 @@ void Game::HandleEvents(SDL_Renderer *renderer) {
         if (sdlEvent.type == SDL_KEYDOWN) {
             switch (sdlEvent.key.keysym.scancode) {
                 case SDL_SCANCODE_ESCAPE:
+                    // saving slides
+                    mrb_slide_number = mrb_funcall(mrb, mrb_top_self(mrb), "save_slide_number", 0, nullptr);
+                    slide_number = mrb_int(mrb, mrb_slide_number);
+                    SaveSystem::saveData(slide_number);
                     manager->isRunning = false;
                     return;
                 case SDL_SCANCODE_R:

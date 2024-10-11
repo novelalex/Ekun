@@ -5,6 +5,15 @@ require './scripts/core/core.rb'
 $slide_number = 0
 $slides = []
 
+
+def load_slide_number(number)
+  $slide_number = number
+end
+
+def save_slide_number
+  $slide_number
+end
+
 require './scripts/slide.rb'
 require './scripts/slides/slide1.rb'
 

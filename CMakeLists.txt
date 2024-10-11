@@ -66,7 +66,9 @@ add_executable(Ekun ${IMGUI_SOURCES}
         src/graphics/Font.cpp
         src/graphics/Font.h
         src/core/InputHandler.cpp
-        src/core/InputHandler.h)
+        src/core/InputHandler.h
+        src/core/SaveSystem.cpp
+        src/core/SaveSystem.h)
 
 target_link_libraries(Ekun
         ${SDL2_LIBRARIES}
