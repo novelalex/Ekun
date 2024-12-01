@@ -48,7 +48,7 @@ bool GameManager::Initialize(const std::string& name_, int width_, int height_) 
 
     // INIT GAME
     game = new Game();
-    if(!game->OnCreate(this)){
+    if(!game->OnCreate()){
         Debug::FatalError("Failed to initialize Game", __FILE__, __LINE__);
         return false;
     }
@@ -58,9 +58,9 @@ bool GameManager::Initialize(const std::string& name_, int width_, int height_) 
 void GameManager::Run() {
     timer->Start();
     isRunning = true;
-    game->Init(window->renderer);
-    while (isRunning) {
-        HandleEvents();
+    game->Init();
+    while (game->isRunning) {
+        game->HandleEvents();
         timer->UpdateFrameTicks();
         game->Update(timer->GetDeltaTime());
         game->Render(window->renderer);
@@ -70,8 +70,3 @@ void GameManager::Run() {
 
     }
 }
-
-
-void GameManager::HandleEvents() {
-        game->HandleEvents(window->renderer);
-    }

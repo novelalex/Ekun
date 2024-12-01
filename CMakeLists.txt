@@ -68,7 +68,11 @@ add_executable(Ekun ${IMGUI_SOURCES}
         src/core/InputHandler.cpp
         src/core/InputHandler.h
         src/core/SaveSystem.cpp
-        src/core/SaveSystem.h)
+        src/core/SaveSystem.h
+        src/scripting/MRubyUtils.cpp
+        src/scripting/MRubyUtils.h
+        src/core/StoryPlayer.cpp
+        src/core/StoryPlayer.h)
 
 target_link_libraries(Ekun
         ${SDL2_LIBRARIES}
