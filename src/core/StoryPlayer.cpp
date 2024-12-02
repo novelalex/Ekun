@@ -10,7 +10,7 @@
 #define MRUBY_GC_START //int mruby_gc_arena_index = mrb_utils.gc_arena_save();
 #define MRUBY_GC_STOP //mrb_utils.gc_arena_restore(mruby_gc_arena_index)
 
-StoryPlayer::StoryPlayer(mrb_state* mrb, mrb_value story) : mrb_utils(mrb), story(story), shouldContinue(false) {
+StoryPlayer::StoryPlayer(mrb_state *mrb, mrb_value story) : mrb_utils(mrb), story(story), shouldContinue(false) {
     scenes = mrb_utils.call_method(story, "scenes");
     characters = mrb_utils.call_method(story, "characters");
     current_scene = "start";
@@ -60,37 +60,43 @@ void StoryPlayer::handle_choices(mrb_value scene) {
 }
 
 bool StoryPlayer::play() {
-   
-        //clear_screen();
-        //mrb_utils.print_mrb_value_type(scenes);
-        mrb_utils.print_error();
-        mrb_utils.print_backtrace();
 
-        mrb_value scene = mrb_utils.get_hash_value(scenes, current_scene.c_str());
-        if (mrb_type(scene) == MRB_TT_FALSE) {
-            std::cout << "[ERROR] :" << current_scene << " is not defined as a scene.\n";
-        }
+    //clear_screen();
+    //mrb_utils.print_mrb_value_type(scenes);
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
 
-        // print_description(scene);
-       bool result = update();
+    mrb_value scene = mrb_utils.get_hash_value(scenes, current_scene.c_str());
+    if (mrb_type(scene) == MRB_TT_FALSE) {
+        std::cout << "[ERROR] :" << current_scene << " is not defined as a scene.\n";
+    }
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
+    // print_description(scene);
+    bool result = update();
 
-        mrb_value choices = mrb_utils.get_hash_value(scene, "choices");
-        mrb_value cont = mrb_utils.get_hash_value(scene, "continue");
+    mrb_value choices = mrb_utils.get_hash_value(scene, "choices");
+    mrb_value cont = mrb_utils.get_hash_value(scene, "continue");
 
-        if (mrb_utils.hash_empty(choices) && mrb_utils.is_nil(cont)) {
-            std::cout << "The End." << std::endl;
-            return result;
-        }
-
-        if (handle_continue(scene)) {
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            return result;
-        }
-
-        handle_choices(scene);
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
+    if (mrb_utils.hash_empty(choices) && mrb_utils.is_nil(cont)) {
+        std::cout << "The End." << std::endl;
         return result;
     }
+
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
+    if (handle_continue(scene)) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return result;
+    }
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
+    handle_choices(scene);
+    return result;
+}
 
 
 bool StoryPlayer::has_more_entries() {
@@ -103,9 +109,11 @@ bool StoryPlayer::has_more_entries() {
 }
 
 void StoryPlayer::handle_current_entry() {
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
     MRUBY_GC_START;
     mrb_value scene = mrb_utils.get_hash_value(scenes, current_scene.c_str());
-    mrb_value timeline = mrb_utils.get_hash_value(scenes, "timeline");
+    mrb_value timeline = mrb_utils.get_hash_value(scene, "timeline");
     mrb_value line = mrb_utils.array_entry(timeline, current_timeline_index);
 
     if (mrb_type(line) == MRB_TT_STRING) {

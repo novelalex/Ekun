@@ -19,7 +19,7 @@ private:
     mrb_value scenes;
     mrb_value characters;
     std::string current_scene;
-    size_t current_timeline_index = 0;
+    int current_timeline_index = 0;
 
     bool has_more_entries();
     void handle_current_entry();
