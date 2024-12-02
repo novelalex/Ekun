@@ -30,9 +30,9 @@ std::string read_file(const std::string& filename) {
 }
 
 
-void play_story(mrb_state* mrb, mrb_value story) {
-    StoryPlayer player(mrb, story);
-    player.play();
+void Game::play_story(mrb_state* mrb, mrb_value story) {
+    player = new StoryPlayer(mrb, story);
+    player->play();
 }
 
 Game::Game(): isRunning{true} {
@@ -49,7 +49,7 @@ bool Game::OnCreate() {
 
 
 void Game::OnDestroy() {
-
+    delete player;
 }
 
 void Game::Init() {
@@ -59,7 +59,7 @@ void Game::Init() {
     }
     try {
         // Load the DSL definition
-        std::string dsl_code = read_file("story_dsl.rb");
+        std::string dsl_code = read_file("script.rb");
         mrb_load_string(mrb, dsl_code.c_str());
 
         // Load the story
@@ -92,6 +92,8 @@ void Game::HandleEvents() {
                 case SDL_SCANCODE_ESCAPE:
                     isRunning = false;
                     return;
+                case SDL_SCANCODE_SPACE:
+                    player->play();
                 default:
                     break;
             }
@@ -103,8 +105,15 @@ void Game::HandleEvents() {
 }
 
 void Game::Update(const float deltaTime) {
-
-
+    if (player->currentDisplay.find("type") == player->currentDisplay.end()) {
+        return;
+    }
+    if (player->currentDisplay["type"] == "description") {
+        std::cout << player->currentDisplay["text"] << std::endl;
+    }
+    else if (player->currentDisplay["type"] == "dialogue") {
+        std::cout << player->currentDisplay["character"] << player->currentDisplay["text"] << std::endl;
+    }
 }
 
 void Game::Render(SDL_Renderer *renderer) {

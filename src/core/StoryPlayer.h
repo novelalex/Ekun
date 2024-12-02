@@ -27,11 +27,11 @@ private:
     void handle_choices(mrb_value scene);
 
 public:
-    std::unordered_map<std::string, std::string> currentDisplay;
+    std::unordered_map<std::string, std::string> currentDisplay{};
     bool shouldContinue;
 
     StoryPlayer(mrb_state* mrb, mrb_value story);
-    void play();
+    bool play();
     void set_scene(std::string new_scene);
     bool update();
 

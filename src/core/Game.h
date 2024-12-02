@@ -8,7 +8,7 @@
 #include <memory>
 #include <SDL.h>
 #include <unordered_map>
-
+#include "StoryPlayer.h"
 #include "GameManager.h"
 #include "../graphics/Sprite.h"
 #include "../scripting/MRuby.h"
@@ -20,6 +20,7 @@
 class Game {
 private:
     mrb_state* mrb;
+    StoryPlayer* player;
 public:
     Game();
     ~Game();
@@ -31,7 +32,8 @@ public:
     void Init();
     void HandleEvents();
     void Update(float deltaTime);
-    void Render(SDL_Renderer* renderer) ;
+    void Render(SDL_Renderer* renderer);
+    void play_story(mrb_state* mrb, mrb_value story);
 };
 
 #endif //EKUN_GAME_H

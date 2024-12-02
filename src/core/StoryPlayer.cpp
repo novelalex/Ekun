@@ -7,13 +7,14 @@
 #include <iostream>
 #include <map>
 
-#define MRUBY_GC_START int mruby_gc_arena_index = mrb_utils.gc_arena_save();
-#define MRUBY_GC_STOP mrb_utils.gc_arena_restore(mruby_gc_arena_index)
+#define MRUBY_GC_START //int mruby_gc_arena_index = mrb_utils.gc_arena_save();
+#define MRUBY_GC_STOP //mrb_utils.gc_arena_restore(mruby_gc_arena_index)
 
 StoryPlayer::StoryPlayer(mrb_state* mrb, mrb_value story) : mrb_utils(mrb), story(story), shouldContinue(false) {
     scenes = mrb_utils.call_method(story, "scenes");
     characters = mrb_utils.call_method(story, "characters");
     current_scene = "start";
+    currentDisplay["type"] = "none";
 }
 
 void StoryPlayer::set_scene(std::string new_scene) {
@@ -58,8 +59,8 @@ void StoryPlayer::handle_choices(mrb_value scene) {
     set_scene(mrb_utils.symbol_name(mrb_utils.get_hash_value(choice_map, "next_scene")));
 }
 
-void StoryPlayer::play() {
-    while (true) {
+bool StoryPlayer::play() {
+   
         //clear_screen();
         //mrb_utils.print_mrb_value_type(scenes);
         mrb_utils.print_error();
@@ -71,25 +72,26 @@ void StoryPlayer::play() {
         }
 
         // print_description(scene);
-        handle_current_entry();
+       bool result = update();
 
         mrb_value choices = mrb_utils.get_hash_value(scene, "choices");
         mrb_value cont = mrb_utils.get_hash_value(scene, "continue");
 
         if (mrb_utils.hash_empty(choices) && mrb_utils.is_nil(cont)) {
             std::cout << "The End." << std::endl;
-            break;
+            return result;
         }
 
         if (handle_continue(scene)) {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            continue;
+            return result;
         }
 
         handle_choices(scene);
+        return result;
     }
-}
+
 
 bool StoryPlayer::has_more_entries() {
     MRUBY_GC_START;
@@ -108,7 +110,9 @@ void StoryPlayer::handle_current_entry() {
 
     if (mrb_type(line) == MRB_TT_STRING) {
         //std::cout << mrb_utils.get_string(line) << std::endl;
-        // TODO: Build the currentDisplay Map
+        currentDisplay.clear();
+        currentDisplay["type"] = "description";
+        currentDisplay["text"] = mrb_utils.get_string(line);
         MRUBY_GC_STOP;
         return;
     }
@@ -117,6 +121,9 @@ void StoryPlayer::handle_current_entry() {
         mrb_value display_str = mrb_utils.call_method(line, "call");
         //std::cout << mrb_utils.get_string(display_str) << std::endl;
         // TODO: Build the currentDisplay Map for dynamic text
+        currentDisplay.clear();
+        currentDisplay["type"] = "description";
+        currentDisplay["text"] = mrb_utils.get_string(display_str);
         MRUBY_GC_STOP;
         return;
     }
@@ -138,6 +145,10 @@ void StoryPlayer::handle_current_entry() {
     std::cout << colored_text << std::endl;
      */
     // TODO: Figure out a new way to color text
+    currentDisplay.clear();
+    currentDisplay["type"] = "dialogue";
+    currentDisplay["character"] = mrb_utils.get_string(char_name);
+    currentDisplay["text"] = mrb_utils.get_string(text);
     MRUBY_GC_STOP;
 }
 
