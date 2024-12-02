@@ -23,6 +23,7 @@ private:
 
     bool has_more_entries();
     void handle_current_entry();
+    void PostTimeline();
     bool handle_continue(mrb_value scene);
     void handle_choices(mrb_value scene);
 

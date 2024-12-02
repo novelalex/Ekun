@@ -35,7 +35,7 @@ void Game::play_story(mrb_state* mrb, mrb_value story) {
     player->play();
 }
 
-Game::Game(): isRunning{true} {
+Game::Game(SDL_Renderer* r) : isRunning{ true }, renderer{r} {
 }
 
 Game::~Game() {
@@ -44,12 +44,19 @@ Game::~Game() {
 
 
 bool Game::OnCreate() {
+    font = new Font("fonts/Montserrat-Regular.ttf", 24);
+    dialog_box = new TextBox(160, 450, 1000, 300);
+    name_box = new TextBox(160, 400, 1000, 300);
+    text_update_flag = true;
     return true;
 }
 
 
 void Game::OnDestroy() {
+    delete dialog_box;
+    delete name_box;
     delete player;
+    delete font;
 }
 
 void Game::Init() {
@@ -70,7 +77,7 @@ void Game::Init() {
         mrb_value story = mrb_funcall(mrb, mrb_top_self(mrb), "get_story", 0);
 
         play_story(mrb, story);
-
+        
 
     }
     catch (const std::exception& e) {
@@ -94,6 +101,8 @@ void Game::HandleEvents() {
                     return;
                 case SDL_SCANCODE_SPACE:
                     player->play();
+                    text_update_flag = true;
+                    break;
                 default:
                     break;
             }
@@ -109,16 +118,31 @@ void Game::Update(const float deltaTime) {
         return;
     }
     if (player->currentDisplay["type"] == "description") {
-        std::cout << player->currentDisplay["text"] << std::endl;
+        if (text_update_flag) {
+            name_box->Update(" ", font, renderer);
+            dialog_box->Update(player->currentDisplay["text"].c_str(), font, renderer);
+            text_update_flag = false;
+        }
     }
-    else if (player->currentDisplay["type"] == "dialogue") {
+    if (player->currentDisplay["type"] == "dialogue") {
         std::cout << player->currentDisplay["character"] << player->currentDisplay["text"] << std::endl;
+        if (text_update_flag) {
+            name_box->Update(player->currentDisplay["character"].c_str(), font, renderer);
+            dialog_box->Update(player->currentDisplay["text"].c_str(), font, renderer);
+            text_update_flag = false;
+        }
     }
 }
 
-void Game::Render(SDL_Renderer *renderer) {
+void Game::Render() {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_RenderDrawRect(renderer, &dialog_box->rect);
+    name_box->Draw(renderer);
+    dialog_box->Draw(renderer);
+
     SDL_RenderPresent(renderer);
 }
 
+ 

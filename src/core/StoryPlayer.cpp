@@ -20,6 +20,9 @@ StoryPlayer::StoryPlayer(mrb_state *mrb, mrb_value story) : mrb_utils(mrb), stor
 void StoryPlayer::set_scene(std::string new_scene) {
     current_scene = new_scene;
     current_timeline_index = 0;
+
+
+
 }
 
 bool StoryPlayer::handle_continue(mrb_value scene) {
@@ -74,29 +77,13 @@ bool StoryPlayer::play() {
     mrb_utils.print_backtrace();
     // print_description(scene);
     bool result = update();
-
-    mrb_value choices = mrb_utils.get_hash_value(scene, "choices");
-    mrb_value cont = mrb_utils.get_hash_value(scene, "continue");
-
-    mrb_utils.print_error();
-    mrb_utils.print_backtrace();
-    if (mrb_utils.hash_empty(choices) && mrb_utils.is_nil(cont)) {
-        std::cout << "The End." << std::endl;
-        return result;
+    if (!result) {
+        PostTimeline();
     }
-
-    mrb_utils.print_error();
-    mrb_utils.print_backtrace();
-    if (handle_continue(scene)) {
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return result;
-    }
-    mrb_utils.print_error();
-    mrb_utils.print_backtrace();
-    handle_choices(scene);
     return result;
 }
+
+
 
 
 bool StoryPlayer::has_more_entries() {
@@ -158,6 +145,30 @@ void StoryPlayer::handle_current_entry() {
     currentDisplay["character"] = mrb_utils.get_string(char_name);
     currentDisplay["text"] = mrb_utils.get_string(text);
     MRUBY_GC_STOP;
+}
+
+void StoryPlayer::PostTimeline() {
+    mrb_value scene = mrb_utils.get_hash_value(scenes, current_scene.c_str());
+    mrb_value choices = mrb_utils.get_hash_value(scene, "choices");
+    mrb_value cont = mrb_utils.get_hash_value(scene, "continue");
+
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
+    if (mrb_utils.hash_empty(choices) && mrb_utils.is_nil(cont)) {
+        std::cout << "The End." << std::endl;
+        return;
+    }
+
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
+    if (handle_continue(scene)) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        return;
+    }
+    mrb_utils.print_error();
+    mrb_utils.print_backtrace();
+    handle_choices(scene);
 }
 
 bool StoryPlayer::update() {

@@ -15,14 +15,21 @@
 #include "../scripting/Script.h"
 #include "SDL_ttf.h"
 #include "../graphics/Font.h"
+#include "../graphics/TextBox.h"
 
 
 class Game {
 private:
     mrb_state* mrb;
     StoryPlayer* player;
+    SDL_Renderer* renderer;
+    Font* font;
+    TextBox* dialog_box;
+    TextBox* name_box;
+    bool text_update_flag;
+
 public:
-    Game();
+    Game(SDL_Renderer* renderer);
     ~Game();
 
     bool isRunning;
@@ -32,7 +39,7 @@ public:
     void Init();
     void HandleEvents();
     void Update(float deltaTime);
-    void Render(SDL_Renderer* renderer);
+    void Render();
     void play_story(mrb_state* mrb, mrb_value story);
 };
 

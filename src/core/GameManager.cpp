@@ -47,7 +47,7 @@ bool GameManager::Initialize(const std::string& name_, int width_, int height_) 
     }
 
     // INIT GAME
-    game = new Game();
+    game = new Game(window->renderer);
     if(!game->OnCreate()){
         Debug::FatalError("Failed to initialize Game", __FILE__, __LINE__);
         return false;
@@ -63,8 +63,8 @@ void GameManager::Run() {
         game->HandleEvents();
         timer->UpdateFrameTicks();
         game->Update(timer->GetDeltaTime());
-        game->Render(window->renderer);
-
+        game->Render();
+        
        // SDL_GL_SwapWindow(window->getWindow());
         SDL_Delay(timer->GetSleepTime(fps));
 

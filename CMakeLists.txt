@@ -72,7 +72,7 @@ add_executable(Ekun ${IMGUI_SOURCES}
         src/scripting/MRubyUtils.cpp
         src/scripting/MRubyUtils.h
         src/core/StoryPlayer.cpp
-        src/core/StoryPlayer.h)
+        src/core/StoryPlayer.h "src/graphics/TextBox.h" "src/graphics/TextBox.cpp")
 
 target_link_libraries(Ekun
         ${SDL2_LIBRARIES}
