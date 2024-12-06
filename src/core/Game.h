@@ -29,6 +29,7 @@ private:
     Sprite* dialog_bg;
     bool text_update_flag;
     std::vector<Button*> choice_buttons;
+    std::unordered_map<std::string, Sprite*> character_sprites;
     void CreateChoiceButtons();
     void ClearChoiceButtons();
 

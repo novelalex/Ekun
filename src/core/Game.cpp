@@ -74,7 +74,7 @@ Game::~Game() {
 
 bool Game::OnCreate() {
     font = new Font("fonts/Montserrat-Regular.ttf", 24);
-    dialog_box = new TextBox(55, 565, 1220, 300);
+    dialog_box = new TextBox(55, 565, 1200, 300);
     name_box = new TextBox(70, 510, 1000, 300);
     text_update_flag = true;
     dialog_bg = new Sprite("sprites/HUD.png", renderer);
