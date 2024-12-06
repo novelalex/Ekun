@@ -35,6 +35,35 @@ void Game::play_story(mrb_state* mrb, mrb_value story) {
     player->play();
 }
 
+void Game::CreateChoiceButtons() {
+    ClearChoiceButtons();
+
+    int w = 400;
+    int h = 50;
+    int space = 20;
+    int initial_y = 300;
+
+    for (size_t i = 0; i < player->currentChoices.size(); i++) {
+        int y = initial_y + (h + space) * i;
+        Button* button = new Button(
+            (1280 - w) / 2,
+            y,
+            w,
+            h,
+            player->currentChoices[i]
+        );
+        choice_buttons.push_back(button);
+    }
+}
+
+void Game::ClearChoiceButtons() {
+    for (Button* button : choice_buttons) {
+        delete button;
+    }
+    choice_buttons.clear();
+}
+
+
 Game::Game(SDL_Renderer* r) : isRunning{ true }, renderer{r} {
 }
 
@@ -45,9 +74,10 @@ Game::~Game() {
 
 bool Game::OnCreate() {
     font = new Font("fonts/Montserrat-Regular.ttf", 24);
-    dialog_box = new TextBox(160, 450, 1000, 300);
-    name_box = new TextBox(160, 400, 1000, 300);
+    dialog_box = new TextBox(55, 565, 1220, 300);
+    name_box = new TextBox(70, 510, 1000, 300);
     text_update_flag = true;
+    dialog_bg = new Sprite("sprites/HUD.png", renderer);
     return true;
 }
 
@@ -57,6 +87,9 @@ void Game::OnDestroy() {
     delete name_box;
     delete player;
     delete font;
+    delete dialog_bg;
+    ClearChoiceButtons();
+    mrb_close(mrb);
 }
 
 void Game::Init() {
@@ -83,16 +116,37 @@ void Game::Init() {
     catch (const std::exception& e) {
         Debug::FatalError(e.what(), __FILE__, __LINE__);
     }
-
 }
 
 void Game::HandleEvents() {
     SDL_Event sdlEvent;
+
+
+
     while (SDL_PollEvent(&sdlEvent)) {
 
         /// Loop over all events in the SDL queue
         if (sdlEvent.type == SDL_EventType::SDL_QUIT) {
             isRunning = false;
+        }
+
+        if (sdlEvent.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX;
+            int mouseY;
+            SDL_GetMouseState(&mouseX, &mouseY);
+
+            if (player->currentDisplay["type"] == "choice") {
+                for (size_t i = 0; i < choice_buttons.size(); i++) {
+                    if (choice_buttons[i]->IsMouseOver(mouseX, mouseY)) {
+                        // Handle choice selection
+                        ClearChoiceButtons();
+                        player->post_choice(i);
+                        player->play();
+                        text_update_flag = true;
+                        break;
+                    }
+                }
+            }
         }
         if (sdlEvent.type == SDL_KEYDOWN) {
             switch (sdlEvent.key.keysym.scancode) {
@@ -106,11 +160,8 @@ void Game::HandleEvents() {
                 default:
                     break;
             }
-
         }
-
     }
-
 }
 
 void Game::Update(const float deltaTime) {
@@ -125,10 +176,17 @@ void Game::Update(const float deltaTime) {
         }
     }
     if (player->currentDisplay["type"] == "dialogue") {
-        std::cout << player->currentDisplay["character"] << player->currentDisplay["text"] << std::endl;
+        //std::cout << player->currentDisplay["character"] << player->currentDisplay["text"] << std::endl;
         if (text_update_flag) {
             name_box->Update(player->currentDisplay["character"].c_str(), font, renderer);
             dialog_box->Update(player->currentDisplay["text"].c_str(), font, renderer);
+            text_update_flag = false;
+        }
+    }
+
+    if (player->currentDisplay["type"] == "choice") {
+        if (text_update_flag) {
+            CreateChoiceButtons();
             text_update_flag = false;
         }
     }
@@ -137,11 +195,16 @@ void Game::Update(const float deltaTime) {
 void Game::Render() {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_RenderDrawRect(renderer, &dialog_box->rect);
+    // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    // SDL_RenderDrawRect(renderer, &dialog_box->rect);
+    dialog_bg->Draw(renderer, 0, 0);
     name_box->Draw(renderer);
     dialog_box->Draw(renderer);
-
+    if (player->currentDisplay["type"] == "choice") {
+        for (Button* button : choice_buttons) {
+            button->Draw(renderer, font);
+        }
+    }
     SDL_RenderPresent(renderer);
 }
 

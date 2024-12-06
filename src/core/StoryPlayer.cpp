@@ -20,9 +20,6 @@ StoryPlayer::StoryPlayer(mrb_state *mrb, mrb_value story) : mrb_utils(mrb), stor
 void StoryPlayer::set_scene(std::string new_scene) {
     current_scene = new_scene;
     current_timeline_index = 0;
-
-
-
 }
 
 bool StoryPlayer::handle_continue(mrb_value scene) {
@@ -39,21 +36,30 @@ void StoryPlayer::handle_choices(mrb_value scene) {
     mrb_value choices = mrb_utils.get_hash_value(scene, "choices");
     mrb_value choice_keys = mrb_utils.hash_keys(choices);
     int choices_len = mrb_utils.array_length(choice_keys);
-
+    currentChoices.clear();
     for (int i = 0; i < choices_len; i++) {
         mrb_value choice = mrb_utils.array_entry(choice_keys, i);
-        std::cout << i + 1 << ". " << mrb_utils.get_string(choice) << std::endl;
+        //std::cout << i + 1 << ". " << mrb_utils.get_string(choice) << std::endl;
+        currentChoices.push_back(mrb_utils.get_string(choice));
     }
 
-    int choice;
-    do {
-        std::cout << "Choose your action (1-" << choices_len << "): ";
-        std::cin >> choice;
-    } while (choice < 1 || choice > choices_len);
+    // int choice;
+    // do {
+    //     std::cout << "Choose your action (1-" << choices_len << "): ";
+    //     std::cin >> choice;
+    // } while (choice < 1 || choice > choices_len);
 
-    mrb_value chosen_key = mrb_utils.array_entry(choice_keys, choice - 1);
+    currentDisplay.clear();
+    currentDisplay["type"] = "choice";
+}
+
+void StoryPlayer::post_choice(int choice) {
+    mrb_value scene = mrb_utils.get_hash_value(scenes, current_scene.c_str());
+    mrb_value choices = mrb_utils.get_hash_value(scene, "choices");
+    mrb_value choice_keys = mrb_utils.hash_keys(choices);
+    mrb_value chosen_key = mrb_utils.array_entry(choice_keys, choice);
+    std::cout << mrb_utils.get_string(mrb_utils.call_method(chosen_key, "to_s", 0)) << std::endl;
     mrb_value choice_map = mrb_utils.get_hash_value(choices, chosen_key);
-
     mrb_value choice_block = mrb_utils.get_hash_value(choice_map, "action");
     if (!mrb_utils.is_nil(choice_block)) {
         mrb_utils.call_method(choice_block, "call", 0);
@@ -82,9 +88,6 @@ bool StoryPlayer::play() {
     }
     return result;
 }
-
-
-
 
 bool StoryPlayer::has_more_entries() {
     MRUBY_GC_START;
@@ -161,11 +164,7 @@ void StoryPlayer::PostTimeline() {
 
     mrb_utils.print_error();
     mrb_utils.print_backtrace();
-    if (handle_continue(scene)) {
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        return;
-    }
+    handle_continue(scene);
     mrb_utils.print_error();
     mrb_utils.print_backtrace();
     handle_choices(scene);

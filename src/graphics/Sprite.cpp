@@ -28,13 +28,21 @@ SDL_Texture * Sprite::getTexture() {
     return texture;
 }
 
+void Sprite::Draw(SDL_Renderer* renderer, int x, int y) {
+    SDL_Rect dst;
+    dst.x = x;
+    dst.y = y;
+    SDL_QueryTexture(texture, nullptr, nullptr, &dst.w, &dst.h);
+    SDL_RenderCopy(renderer, texture, nullptr, &dst);
+}
+
 SDL_Texture* Sprite::loadTexture( std::string path, SDL_Renderer* renderer ) {
     //The final texture
-    SDL_Texture* newTexture = NULL;
+    SDL_Texture* newTexture = nullptr;
 
     //Load image at specified path
     SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-    if( loadedSurface == NULL )
+    if( loadedSurface == nullptr )
     {
         printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
     }
@@ -42,7 +50,7 @@ SDL_Texture* Sprite::loadTexture( std::string path, SDL_Renderer* renderer ) {
     {
         //Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface( renderer, loadedSurface );
-        if( newTexture == NULL )
+        if( newTexture == nullptr )
         {
             printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
         }

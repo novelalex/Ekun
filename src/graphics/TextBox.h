@@ -15,6 +15,7 @@ public:
 	TextBox(int x, int y, int w, int h);
 	~TextBox();
 
+	void Draw(SDL_Renderer* renderer, int x, int y);
 	void Draw(SDL_Renderer* renderer);
 	void Update(const char* text, Font* font, SDL_Renderer* renderer);
 	void Free();

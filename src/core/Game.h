@@ -16,7 +16,7 @@
 #include "SDL_ttf.h"
 #include "../graphics/Font.h"
 #include "../graphics/TextBox.h"
-
+#include "../graphics/Button.h"
 
 class Game {
 private:
@@ -26,7 +26,11 @@ private:
     Font* font;
     TextBox* dialog_box;
     TextBox* name_box;
+    Sprite* dialog_bg;
     bool text_update_flag;
+    std::vector<Button*> choice_buttons;
+    void CreateChoiceButtons();
+    void ClearChoiceButtons();
 
 public:
     Game(SDL_Renderer* renderer);

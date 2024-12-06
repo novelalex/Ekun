@@ -21,6 +21,7 @@ public:
     Sprite(const std::string& filename, SDL_Renderer* renderer);
     ~Sprite();
     SDL_Texture* getTexture();
+    void Draw(SDL_Renderer* renderer, int x, int y);
 
 private:
 
