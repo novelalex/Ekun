@@ -34,8 +34,8 @@ class Story
     @scenes[@current_scene][:continue] = next_scene
   end
 
-  def character(name, display_name, color)
-    @characters[name] = { name: display_name, color: color }
+  def character(name, display_name, path = nil)
+    @characters[name] = { name: display_name, path: path }
   end
 
   def dialogue(character, text = nil, &block)

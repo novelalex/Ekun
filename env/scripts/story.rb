@@ -1,12 +1,12 @@
 create_story do
-  character :riley, "Riley", :black
-  character :elle, "Elle", :yellow
-  character :guide, "Guide", :mint
-  character :nay, "Nay", :green
-  character :bigguy, "Big Guy", :blue
-  character :nerdygirl, "Nerdy Girl", :red
-  character :aya, "Aya", :aqua
-  character :loch, "Loch", :brown
+  character :riley, "Riley", "sprites/Riley.png"
+  character :elle, "Elle", "sprites/Elle.png"
+  character :guide, "Guide", "sprites/Nay.png"
+  character :nay, "Nay", "sprites/Nay.png"
+  character :bigguy, "Big Guy", "sprites/Jones.png"
+  character :nerdygirl, "Nerdy Girl", "sprites/Aya.png"
+  character :aya, "Aya", "sprites/Aya.png"
+  character :loch, "Loch", "sprites/Untitled_Artwork.png"
 
   scene :start do
     description "Riley walks up to the station platform, bag in hand."

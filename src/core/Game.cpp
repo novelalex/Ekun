@@ -78,6 +78,9 @@ bool Game::OnCreate() {
     name_box = new TextBox(70, 510, 1000, 300);
     text_update_flag = true;
     dialog_bg = new Sprite("sprites/HUD.png", renderer);
+
+
+
     return true;
 }
 
@@ -109,8 +112,21 @@ void Game::Init() {
 
         mrb_value story = mrb_funcall(mrb, mrb_top_self(mrb), "get_story", 0);
 
+
+        mrb_value characters = mrb_funcall(mrb, story, "characters", 0);
+        mrb_value char_arr = mrb_funcall(mrb, characters, "keys", 0);
+        mrb_print_error(mrb);
+        mrb_print_backtrace(mrb);
+        for (int i = 0; i < RARRAY_LEN(char_arr); i++) {
+            mrb_value character = mrb_hash_get(mrb, characters, mrb_ary_entry(char_arr, i));
+            mrb_funcall(mrb, mrb_top_self(mrb), "puts", 1, character);
+
+            mrb_value mrb_path = mrb_hash_get(mrb, character, mrb_symbol_value(mrb_intern_cstr(mrb, "path")));
+            std::string path = mrb_str_to_cstr(mrb, mrb_path);
+            character_sprites[path] = new Sprite(path, renderer);
+        }
+
         play_story(mrb, story);
-        
 
     }
     catch (const std::exception& e) {
@@ -197,6 +213,11 @@ void Game::Render() {
     SDL_RenderClear(renderer);
     // SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     // SDL_RenderDrawRect(renderer, &dialog_box->rect);
+
+    if (player->currentDisplay["type"] == "dialogue") {
+        character_sprites[player->currentDisplay["path"].c_str()]->Draw(renderer, -850, -150);
+    }
+
     dialog_bg->Draw(renderer, 0, 0);
     name_box->Draw(renderer);
     dialog_box->Draw(renderer);

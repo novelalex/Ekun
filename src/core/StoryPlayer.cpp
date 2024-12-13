@@ -134,7 +134,7 @@ void StoryPlayer::handle_current_entry() {
     }
     mrb_value character = mrb_utils.get_hash_value(characters, character_sym);
     mrb_value char_name = mrb_utils.get_hash_value(character, "name");
-    mrb_value char_color = mrb_utils.get_hash_value(character, "color");
+    mrb_value char_path = mrb_utils.get_hash_value(character, "path");
 
     /*std::string colored_text = color_text(
             mrb_utils.get_string(char_name) + ": \"" + mrb_utils.get_string(text) + "\"",
@@ -147,6 +147,7 @@ void StoryPlayer::handle_current_entry() {
     currentDisplay["type"] = "dialogue";
     currentDisplay["character"] = mrb_utils.get_string(char_name);
     currentDisplay["text"] = mrb_utils.get_string(text);
+    currentDisplay["path"] = mrb_utils.get_string(char_path);
     MRUBY_GC_STOP;
 }
 
